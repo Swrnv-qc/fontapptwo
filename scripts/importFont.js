@@ -2,11 +2,11 @@ const process = require('process');
 const fs = require('fs');
 const https = require('https');
 const path = require('path');
-const targetDir1 = 'assets/fonts';
-const targetDir2 = 'src/public/assets/fonts';
+const appDirectory = 'assets/fonts';
+const webDirectory = 'src/public/assets/fonts';
 
 // Create target directories if they don't exist
-for (const targetDir of [targetDir1, targetDir2]) {
+for (const targetDir of [appDirectory, webDirectory]) {
   if (!fs.existsSync(targetDir)) {
     fs.mkdirSync(targetDir, {recursive: true});
   }
@@ -47,14 +47,14 @@ function handleStringOption(url, fontName) {
 
 function extractFontUrl(cssString, fontName) {
   // Regular expression to match URLs with .ttf extension within the CSS string
-  const urlRegex = /https:[^}]*\.ttf/;
+  // const urlRegex = /https:[^}]*\.ttf/;
+  const urlRegex = /https:[^}]*\.(ttf|otf)/;
   const capturedUrl = cssString.match(urlRegex);
-
   if (capturedUrl) {
     // If a .ttf URL is found, download the font
     downloadFont(capturedUrl[0], fontName);
   } else {
-    console.error('No .ttf font URL found!');
+    console.error('No .ttf or .otf font URL found!');
     return null;
   }
 }
@@ -63,8 +63,9 @@ function extractFontUrl(cssString, fontName) {
 
 function downloadFont(url, fontName) {
   // Construct the filename using fontName with .ttf extension
-  const filename = fontName + '.ttf';
-
+  const extensionRegex = /\.ttf|\.otf$/;
+  const capturedExtension = url.match(extensionRegex);
+  const filename = fontName + capturedExtension;
   https
     .get(url, response => {
       if (response.statusCode === 200) {
@@ -94,23 +95,23 @@ function copyFile(filename) {
   const sourcePath = filename;
 
   // Define target paths with path.join
-  const targetPath1 = path.join(targetDir1, filename);
-  const targetPath2 = path.join(targetDir2, filename);
+  const targetPath1 = path.join(appDirectory, filename);
+  const targetPath2 = path.join(webDirectory, filename);
 
   // Use fs.copyFileSync with COPYFILE_EXCL for atomic copy with overwrite prevention
   fs.copyFileSync(sourcePath, targetPath1, fs.constants.COPYFILE_EXCL, err => {
     if (err) {
-      console.error(`Error moving file to ${targetDir1}: ${err.message}`);
+      console.error(`Error moving file to ${appDirectory}: ${err.message}`);
     } else {
-      console.log(`File moved to ${targetDir1}`);
+      console.log(`File moved to ${appDirectory}`);
     }
   });
 
   fs.copyFileSync(sourcePath, targetPath2, fs.constants.COPYFILE_EXCL, err => {
     if (err) {
-      console.error(`Error copying file to ${targetDir2}: ${err.message}`);
+      console.error(`Error moving file to ${webDirectory}: ${err.message}`);
     } else {
-      console.log(`File copied to ${targetDir2}`);
+      console.log(`File moving to ${webDirectory}`);
     }
   });
 
