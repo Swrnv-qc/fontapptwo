@@ -131,8 +131,20 @@ if (options.includes('url')) {
   handleLocalOption(process.argv[3]);
 } else if (options.includes('string')) {
   // Handle font provided as a string
-  const fontFamilyUrl = `https://fonts.googleapis.com/css2?family=${process.argv[3]}`;
-  handleStringOption(fontFamilyUrl, process.argv[3]);
+  if (!process.argv[3]) {
+    throw new Error(
+      'Missing font family arguments. Please provide font family name.',
+    );
+  } else {
+    var i = 3;
+    var fontFamilyUrl = `https://fonts.googleapis.com/css2?family=${process.argv[i]}`;
+    var fileName = process.argv[i];
+    while (process.argv[++i]) {
+      fontFamilyUrl += `+${process.argv[i]}`;
+      fileName += process.argv[i];
+    }
+    handleStringOption(fontFamilyUrl, fileName);
+  }
 } else {
   // Print error message for invalid options
   console.error('Invalid option. Please use one of: -url, -local, or -string');
