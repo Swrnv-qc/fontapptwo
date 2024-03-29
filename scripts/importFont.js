@@ -64,6 +64,7 @@ function extractFontUrl(cssString, fontName) {
 function downloadFont(url, fontName) {
   // Construct the filename using fontName with .ttf extension
   const extensionRegex = /\.ttf|\.otf$/;
+  console.log(url);
   const capturedExtension = url.match(extensionRegex);
   const filename = fontName + capturedExtension;
   https
@@ -172,3 +173,24 @@ if (options.includes('url')) {
   // Print error message for invalid options
   console.error('Invalid option. Please use one of: -url, -local, or -string');
 }
+
+// wr import font "" --url
+// https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlvAw.ttf
+// https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmSU5vAw.ttf
+// https://fonts.gstatic.com/s/roboto/v30/KFOiCnqEu92Fr1Mu51QrIzc.ttf
+// https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Me5Q.ttf
+// https://fonts.gstatic.com/s/roboto/v30/KFOkCnqEu92Fr1MmgWxP.ttf
+// https://fonts.gstatic.com/s/roboto/v30/KFOkCnqEu92Fr1Mu52xP.ttf
+// https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmYUtvAw.ttf
+// https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmEU9vAw.ttf
+// https://fonts.gstatic.com/s/roboto/v30/KFOjCnqEu92Fr1Mu51S7ABc9.ttf
+// https://fonts.gstatic.com/s/roboto/v30/KFOjCnqEu92Fr1Mu51TjARc9.ttf
+// https://fonts.gstatic.com/s/roboto/v30/KFOjCnqEu92Fr1Mu51TzBhc9.ttf
+// https://fonts.gstatic.com/s/roboto/v30/KFOjCnqEu92Fr1Mu51TLBBc9.ttf
+
+// wr import font "Roboto" --name
+// wr import font "Noto Sans" --name
+
+// wr import font "./Roboto.ttf" --path
+// wr import font "./Noto Sans.ttf" --path
+// wr import font "./Noto_Sans.ttf" --path
