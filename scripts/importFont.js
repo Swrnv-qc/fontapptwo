@@ -158,7 +158,12 @@ if (options.includes('url')) {
     styles.forEach(style => {
       weights.forEach(weight => {
         var urlWithStyleWeight = `${fontFamilyUrl}${style}${weight}`;
-        var fileNameWithStyleWeight = fileName + style + weight;
+        var fileNameWithStyleWeight;
+        if (style === ':ital,wght@1,') {
+          fileNameWithStyleWeight = fileName + '_italics_' + weight;
+        } else {
+          fileNameWithStyleWeight = fileName + '_' + weight;
+        }
         handleStringOption(urlWithStyleWeight, fileNameWithStyleWeight);
       });
     });
