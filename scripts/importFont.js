@@ -137,13 +137,31 @@ if (options.includes('url')) {
     );
   } else {
     var i = 3;
+    const styles = [':wght@', ':ital,wght@1,'];
+    const weights = [
+      '100',
+      '200',
+      '300',
+      '400',
+      '500',
+      '600',
+      '700',
+      '800',
+      '900',
+    ];
     var fontFamilyUrl = `https://fonts.googleapis.com/css2?family=${process.argv[i]}`;
     var fileName = process.argv[i];
     while (process.argv[++i]) {
       fontFamilyUrl += `+${process.argv[i]}`;
       fileName += process.argv[i];
     }
-    handleStringOption(fontFamilyUrl, fileName);
+    styles.forEach(style => {
+      weights.forEach(weight => {
+        var urlWithStyleWeight = `${fontFamilyUrl}${style}${weight}`;
+        var fileNameWithStyleWeight = fileName + style + weight;
+        handleStringOption(urlWithStyleWeight, fileNameWithStyleWeight);
+      });
+    });
   }
 } else {
   // Print error message for invalid options
